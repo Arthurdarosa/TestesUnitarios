@@ -1,5 +1,6 @@
 package repository;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.Before;
@@ -41,13 +42,14 @@ public class BancoDadosTest {
 		assertEquals(5, cads.size());
 		assertEquals(5, cads.get(4).getId());
 	}
+	
 	@Test
-	@DisplayName("teste id")
-	void testFindId() {
-		assertEquals(1, bd.findById(1));
-		assertEquals(2, bd.findById(2));
-		assertEquals(0, bd.findById(0));
-	}
+    @DisplayName("Teste encontrar por ID")
+    void testFindId() {
+        assertNull(bd.findById(0));
+        assertEquals("Pessoa 1", bd.findById(1).getNome());
+        assertEquals("Pessoa 2", bd.findById(2).getNome());
+    }
 	
 	@Test
 	@DisplayName("teste updade")
@@ -68,7 +70,18 @@ public class BancoDadosTest {
 		assertEquals( EnumSexo.MASCULINO, cads.get(3).getSexo());
 	}
 	
-	
+	@Test
+    @DisplayName("Teste excluir")
+    void testDelete() {
+        bd.delete(2);
+        List<Pessoa> cads = bd.listAll();
+        assertEquals(3, cads.size());
+        assertNull(bd.findById(2));
+
+        bd.delete(5);
+        cads = bd.listAll();
+        assertEquals(3, cads.size());
+    }
 	
 
 
